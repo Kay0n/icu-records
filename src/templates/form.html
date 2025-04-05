@@ -1,0 +1,450 @@
+{% extends "base.html" %}
+
+{% block title %}{{ form_title }}{% endblock %}
+
+{# helper macro for rendering errors inline - useful inside tables #}
+{% macro render_errors(field) %}
+{% if field.errors %}
+<div class="invalid-feedback d-block"> 
+  {{ field.errors|join(' ') }}
+</div>
+{% endif %}
+{% endmacro %}
+
+
+{% block content %}
+<h1>{{ form_title }}</h1>
+<hr>
+
+<form method="POST" action="{{ form_action }}" novalidate>
+  {{ form.csrf_token }}
+
+  <!-- Section 1: Patient Information & Setup -->
+  <fieldset class="record-form-section">
+    <legend class="mb-3">Patient Information & Setup</legend>
+    <div class="row mb-3">
+      <div class="col-md-4">
+        {{ form.patient_ur.label(class="form-label") }}
+        {{ form.patient_ur(class="form-control form-control-sm" + (' is-invalid' if form.patient_ur.errors else '')) }}
+        {{ render_errors(form.patient_ur) }}
+      </div>
+      <div class="col-md-4">
+        {{ form.patient_serial.label(class="form-label") }}
+        {{ form.patient_serial(class="form-control form-control-sm" + (' is-invalid' if form.patient_serial.errors else
+        '')) }}
+        {{ render_errors(form.patient_serial) }}
+      </div>
+      <div class="col-md-4">
+        {{ form.collection_date.label(class="form-label") }}
+        {{ form.collection_date(class="form-control form-control-sm" + (' is-invalid' if form.collection_date.errors
+        else ''), type='date') }}
+        {{ render_errors(form.collection_date) }}
+      </div>
+    </div>
+    <div class="row mb-3 align-items-end">
+      <div class="col-md-4">
+        {{ form.observer.label(class="form-label") }}
+        {{ form.observer(class="form-select form-select-sm" + (' is-invalid' if form.observer.errors else '')) }} 
+        {{ render_errors(form.observer) }}
+      </div>
+      <div class="col-md-2">
+        {{ form.height_cm.label(class="form-label") }}
+        {{ form.height_cm(class="form-control form-control-sm" + (' is-invalid' if form.height_cm.errors else ''),
+        placeholder='cm') }}
+        {{ render_errors(form.height_cm) }}
+      </div>
+      <div class="col-md-2">
+        {{ form.weight_kg.label(class="form-label") }}
+        {{ form.weight_kg(class="form-control form-control-sm" + (' is-invalid' if form.weight_kg.errors else ''),
+        placeholder='kg') }}
+        {{ render_errors(form.weight_kg) }}
+      </div>
+      <div class="col-md-2">
+        {{ form.bsa.label(class="form-label") }}
+        {{ form.bsa(class="form-control form-control-sm" + (' is-invalid' if form.bsa.errors else ''), placeholder='m²')
+        }}
+        {{ render_errors(form.bsa) }}
+      </div>
+      <div class="col-md-2">
+        <label class="form-label d-block">Checks</label> 
+        <div class="form-check form-check-inline">
+          {{ form.check_head_of_bed(class="form-check-input") }}
+          {{ form.check_head_of_bed.label(class="form-check-label small") }}
+        </div>
+        <div class="form-check form-check-inline">
+          {{ form.check_transducer_level(class="form-check-input") }}
+          {{ form.check_transducer_level.label(class="form-check-label small") }}
+        </div>
+      </div>
+    </div>
+  </fieldset>
+
+  <!-- Section 2 & 3: Treatment & Inotropes -->
+  <div class="row">
+    <div class="col-md-6">
+      <fieldset class="record-form-section h-100"> 
+        <legend class="mb-3">Current Patient Treatment</legend>
+        <div class="row">
+          <div class="col-sm-8">
+            {{ form.ventilation.label(class="form-label") }}
+            {% for subfield in form.ventilation %}
+            <div class="form-check">
+              {{ subfield(class="form-check-input") }}
+              {{ subfield.label(class="form-check-label") }}
+            </div>
+            {% endfor %}
+          </div>
+          <div class="col-sm-4">
+            {{ form.peep.label(class="form-label") }}
+            {{ form.peep(class="form-control form-control-sm" + (' is-invalid' if form.peep.errors else '')) }}
+            {{ render_errors(form.peep) }}
+          </div>
+        </div>
+      </fieldset>
+    </div>
+    <div class="col-md-6">
+      <fieldset class="record-form-section h-100">
+        <legend class="mb-3">Inotropes / Vasopressors / Vasodilators</legend>
+        <label class="form-label">Medications</label>
+        <div class="form-check">
+          {{ form.medication_aramine(class="form-check-input") }}
+          {{ form.medication_aramine.label(class="form-check-label") }}
+        </div>
+        <div class="form-check">
+          {{ form.medication_noradrenaline(class="form-check-input") }}
+          {{ form.medication_noradrenaline.label(class="form-check-label") }}
+        </div>
+        <div class="form-check">
+          {{ form.medication_adrenaline(class="form-check-input") }}
+          {{ form.medication_adrenaline.label(class="form-check-label") }}
+        </div>
+        <div class="form-check">
+          {{ form.medication_gtn(class="form-check-input") }}
+          {{ form.medication_gtn.label(class="form-check-label") }}
+        </div>
+        <div class="form-check">
+          {{ form.medication_milrinone(class="form-check-input") }}
+          {{ form.medication_milrinone.label(class="form-check-label") }}
+        </div>
+        <div class="form-check">
+          {{ form.medication_isoprenaline(class="form-check-input") }}
+          {{ form.medication_isoprenaline.label(class="form-check-label") }}
+        </div>
+        <div class="form-check">
+          {{ form.medication_dobutamine(class="form-check-input") }}
+          {{ form.medication_dobutamine.label(class="form-check-label") }}
+        </div>
+      </fieldset>
+    </div>
+  </div>
+
+
+  <!-- Section 4, 5, 6: Rhythm, JVP, Timings -->
+  <fieldset class="record-form-section">
+    <legend class="mb-3">Observations</legend>
+    <div class="row mb-3 align-items-start">
+
+      <div class="col-md-4">
+        {{ form.cardiac_rhythm.label(class="form-label") }}
+        {{ form.cardiac_rhythm(class="form-select form-select-sm" + (' is-invalid' if form.cardiac_rhythm.errors else
+        '')) }}
+        {{ render_errors(form.cardiac_rhythm) }}
+      </div>
+      <div class="col-md-3">
+        {{ form.cvc_location.label(class="form-label") }}
+        {{ form.cvc_location(class="form-select form-select-sm" + (' is-invalid' if form.cvc_location.errors else ''))
+        }}
+        {{ render_errors(form.cvc_location) }}
+      </div>
+      <div class="col-md-3">
+        {{ form.jvp_height_cm.label(class="form-label") }}
+        {{ form.jvp_height_cm(class="form-control form-control-sm" + (' is-invalid' if form.jvp_height_cm.errors else
+        ''), placeholder='cm') }}
+        {{ render_errors(form.jvp_height_cm) }}
+      </div>
+
+      <div class="col-md-3 d-flex align-items-center pt-4"> 
+        <div class="form-check">
+          {{ form.photograph_taken(class="form-check-input") }}
+          {{ form.photograph_taken.label(class="form-check-label") }}
+        </div>
+      </div>
+    </div>
+  </fieldset>
+
+
+
+
+  <!-- Section 11: ECHO Measurements (Table) -->
+
+  <fieldset class="record-form-section">
+    <legend class="mb-3">ECHO Measurements</legend>
+    <div class="row mb-3 align-items-center">
+      <div class="col-md-3 align-items-center">
+        {{ form.echo_start_time.label(class="form-label") }}
+        {{ form.echo_start_time(class="form-control form-control-sm" + (' is-invalid' if form.echo_start_time.errors
+        else ''), type="text", placeholder='HH:MM') }}
+        {{ render_errors(form.echo_start_time) }}
+      </div>
+      <div class="col-md-3">
+        {{ form.echo_completion_time.label(class="form-label") }}
+        {{ form.echo_completion_time(class="form-control form-control-sm" + (' is-invalid' if
+        form.echo_completion_time.errors else ''), placeholder='HH:MM') }}
+        {{ render_errors(form.echo_completion_time) }}
+      </div>
+      <div class="col-md-3">
+        {{ form.echo_total_time_min.label(class="form-label") }}
+        {{ form.echo_total_time_min(class="form-control form-control-sm" + (' is-invalid' if
+        form.echo_total_time_min.errors else ''), placeholder='min') }}
+        {{ render_errors(form.echo_total_time_min) }}
+      </div>
+    </div>
+    <br>
+    <div class="table-responsive">
+      <table class="table table-bordered table-sm" style="font-size: 0.9em;"> 
+        <tbody>
+          <tr>
+            <td style="width: 20%;">{{ form.ivc_diameter_cm.label(class="form-label mb-0") }}</td>
+            <td style="width: 20%;">
+              <div class="input-group input-group-sm">
+                {{ form.ivc_diameter_cm(class="form-control form-control-sm" + (' is-invalid' if
+                form.ivc_diameter_cm.errors else ''), tabindex="1") }} 
+                <span class="input-group-text">cm</span>
+              </div>
+              {{ render_errors(form.ivc_diameter_cm) }}
+            </td>
+            <td style="width: 10%;"></td> 
+            <td style="width: 20%;">{{ form.e_velocity_mps.label(class="form-label mb-0") }}</td>
+            <td style="width: 20%;">
+              <div class="input-group input-group-sm">
+                {{ form.e_velocity_mps(class="form-control form-control-sm" + (' is-invalid' if
+                form.e_velocity_mps.errors else ''), tabindex="9") }}
+                <span class="input-group-text">M/sec</span>
+              </div>
+              {{ render_errors(form.e_velocity_mps) }}
+            </td>
+          </tr>
+          <tr>
+            <td>{{ form.systemic_venous_flow_velocity_mps.label(class="form-label mb-0") }}</td>
+            <td>
+              <div class="input-group input-group-sm">
+                {{ form.systemic_venous_flow_velocity_mps(class="form-control form-control-sm" + (' is-invalid' if
+                form.systemic_venous_flow_velocity_mps.errors else ''), tabindex="2") }} 
+                <span class="input-group-text">m/sec</span>
+              </div>
+              {{ render_errors(form.systemic_venous_flow_velocity_mps) }}
+            </td>
+            <td></td>
+
+            <td>{{ form.a_velocity_mps.label(class="form-label mb-0") }}</td>
+            <td>
+              <div class="input-group input-group-sm">
+                {{ form.a_velocity_mps(class="form-control form-control-sm" + (' is-invalid' if
+                form.a_velocity_mps.errors else ''), tabindex="10") }}
+                <span class="input-group-text">M/sec</span>
+              </div>
+              {{ render_errors(form.a_velocity_mps) }}
+            </td>
+          </tr>
+          <tr>
+
+            <td>{{ form.tricuspid_valve_doppler_inflow_mps.label(class="form-label mb-0") }}</td>
+            <td>
+              <div class="input-group input-group-sm">
+                {{ form.tricuspid_valve_doppler_inflow_mps(class="form-control form-control-sm" + (' is-invalid' if
+                form.tricuspid_valve_doppler_inflow_mps.errors else ''), tabindex="3") }} 
+                <span class="input-group-text">m/sec</span>
+              </div>
+              {{ render_errors(form.tricuspid_valve_doppler_inflow_mps) }}
+            </td>
+            <td></td>
+
+            <td>{{ form.mean_gradient_mmhg.label(class="form-label mb-0") }}</td>
+            <td>
+              <div class="input-group input-group-sm">
+                {{ form.mean_gradient_mmhg(class="form-control form-control-sm" + (' is-invalid' if
+                form.mean_gradient_mmhg.errors else ''), tabindex="11") }} 
+                <span class="input-group-text">mmHg</span>
+              </div>
+              {{ render_errors(form.mean_gradient_mmhg) }}
+            </td>
+          </tr>
+          <tr>
+
+            <td>{{ form.tr_max_mps.label(class="form-label mb-0") }}</td>
+            <td>
+              <div class="input-group input-group-sm">
+                {{ form.tr_max_mps(class="form-control form-control-sm" + (' is-invalid' if form.tr_max_mps.errors else
+                ''), tabindex="4") }} 
+                <span class="input-group-text">M/sec</span>
+              </div>
+              {{ render_errors(form.tr_max_mps) }}
+            </td>
+            <td></td>
+
+            <td>{{ form.dt_mps.label(class="form-label mb-0") }}</td>
+            <td>
+              <div class="input-group input-group-sm">
+                {{ form.dt_mps(class="form-control form-control-sm" + (' is-invalid' if form.dt_mps.errors else ''),
+                tabindex="12") }} 
+                <span class="input-group-text">M/sec</span>
+              </div>
+              {{ render_errors(form.dt_mps) }}
+            </td>
+          </tr>
+          <tr>
+
+            <td>{{ form.tr_peak_gradient_mmhg.label(class="form-label mb-0") }}</td>
+            <td>
+              <div class="input-group input-group-sm">
+                {{ form.tr_peak_gradient_mmhg(class="form-control form-control-sm" + (' is-invalid' if
+                form.tr_peak_gradient_mmhg.errors else ''), tabindex="5") }} 
+                <span class="input-group-text">mm Hg</span>
+              </div>
+              {{ render_errors(form.tr_peak_gradient_mmhg) }}
+            </td>
+            <td></td>
+
+            <td>{{ form.pht_mps.label(class="form-label mb-0") }}</td>
+            <td>
+              <div class="input-group input-group-sm">
+                {{ form.pht_mps(class="form-control form-control-sm" + (' is-invalid' if form.pht_mps.errors else ''),
+                tabindex="13") }} 
+                <span class="input-group-text">M/sec</span>
+              </div>
+              {{ render_errors(form.pht_mps) }}
+            </td>
+          </tr>
+          <tr>
+
+            <td>{{ form.rap_mmhg.label(class="form-label mb-0") }}</td>
+            <td>
+              <div class="input-group input-group-sm">
+                {{ form.rap_mmhg(class="form-control form-control-sm" + (' is-invalid' if form.rap_mmhg.errors else ''),
+                tabindex="6") }}
+                <span class="input-group-text">mm Hg</span>
+              </div>
+              {{ render_errors(form.rap_mmhg) }}
+            </td>
+            <td></td>
+
+            <td>{{ form.tva_cont_cm2.label(class="form-label mb-0") }}</td>
+            <td>
+              <div class="input-group input-group-sm">
+                {{ form.tva_cont_cm2(class="form-control form-control-sm" + (' is-invalid' if form.tva_cont_cm2.errors
+                else ''), tabindex="14") }} 
+                <span class="input-group-text">Cm²</span>
+              </div>
+              {{ render_errors(form.tva_cont_cm2) }}
+            </td>
+          </tr>
+          <tr>
+
+            <td>{{ form.rvsp_mmhg.label(class="form-label mb-0") }}</td>
+            <td>
+              <div class="input-group input-group-sm">
+                {{ form.rvsp_mmhg(class="form-control form-control-sm" + (' is-invalid' if form.rvsp_mmhg.errors else
+                ''), tabindex="7") }} 
+                <span class="input-group-text">mm Hg</span>
+              </div>
+              {{ render_errors(form.rvsp_mmhg) }}
+            </td>
+            <td></td>
+
+            <td>{{ form.rsv_prime.label(class="form-label mb-0") }}</td>
+            <td>
+              {{ form.rsv_prime(class="form-control form-control-sm" + (' is-invalid' if form.rsv_prime.errors else ''),
+              tabindex="15") }} 
+              {{ render_errors(form.rsv_prime) }}
+            </td>
+          </tr>
+          <tr>
+
+            <td>{{ form.vti_cm.label(class="form-label mb-0") }}</td>
+            <td>
+              <div class="input-group input-group-sm">
+                {{ form.vti_cm(class="form-control form-control-sm" + (' is-invalid' if form.vti_cm.errors else ''),
+                tabindex="8") }} 
+                <span class="input-group-text">cm</span>
+              </div>
+              {{ render_errors(form.vti_cm) }}
+            </td>
+            <td></td>
+
+            <td>{{ form.tev_prime.label(class="form-label mb-0") }}</td>
+            <td>
+              {{ form.tev_prime(class="form-control form-control-sm" + (' is-invalid' if form.tev_prime.errors else ''),
+              tabindex="16") }}
+              {{ render_errors(form.tev_prime) }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </fieldset>
+
+
+
+  <!-- Section 7 & 10: Haemodynamics -->
+  <fieldset class="record-form-section">
+    <legend class="mb-3">Haemodynamics</legend>
+    <div class="row mb-3">
+      <div class="col-md-2">
+        {{ form.hr.label(class="form-label") }}
+        {{ form.hr(class="form-control form-control-sm" + (' is-invalid' if form.hr.errors else '')) }}
+        {{ render_errors(form.hr) }}
+      </div>
+      <div class="col-md-2">
+        {{ form.sys_bp_mmhg.label(class="form-label") }}
+        {{ form.sys_bp_mmhg(class="form-control form-control-sm" + (' is-invalid' if form.sys_bp_mmhg.errors else ''))
+        }}
+        {{ render_errors(form.sys_bp_mmhg) }}
+      </div>
+      <div class="col-md-2">
+        {{ form.dia_bp_mmhg.label(class="form-label") }}
+        {{ form.dia_bp_mmhg(class="form-control form-control-sm" + (' is-invalid' if form.dia_bp_mmhg.errors else ''))
+        }}
+        {{ render_errors(form.dia_bp_mmhg) }}
+      </div>
+      <div class="col-md-2">
+        {{ form.map_bp_mmhg.label(class="form-label") }}
+        {{ form.map_bp_mmhg(class="form-control form-control-sm" + (' is-invalid' if form.map_bp_mmhg.errors else ''))
+        }}
+        {{ render_errors(form.map_bp_mmhg) }}
+      </div>
+      <div class="col-md-2">
+        {{ form.cvp_mmhg.label(class="form-label") }}
+        {{ form.cvp_mmhg(class="form-control form-control-sm" + (' is-invalid' if form.cvp_mmhg.errors else '')) }}
+        {{ render_errors(form.cvp_mmhg) }}
+      </div>
+      <div class="col-md-2">
+        {{ form.pulse_pressure_variation_mmhg.label(class="form-label") }}
+        {{ form.pulse_pressure_variation_mmhg(class="form-control form-control-sm" + (' is-invalid' if
+        form.pulse_pressure_variation_mmhg.errors else '')) }}
+        {{ render_errors(form.pulse_pressure_variation_mmhg) }}
+      </div>
+    </div>
+  </fieldset>
+
+
+
+  <!-- Submit Button -->
+  <div class="row mt-4 mb-5"> 
+    <div class="col-12">
+      {{ form.submit(class="btn btn-primary") }}
+      <a href="{{ url_for('dashboard') }}" class="btn btn-secondary ms-2">Cancel</a>
+    </div>
+  </div>
+
+</form>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  // Basic client-side validation hint
+  const urField = document.getElementById('patient_ur');
+  if (urField) { urField.required = true; }
+  const dateField = document.getElementById('collection_date');
+  if (dateField) { dateField.required = true; }
+</script>
+{% endblock %}

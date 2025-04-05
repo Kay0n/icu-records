@@ -1,0 +1,36 @@
+
+.record-form-section {
+    border: 1px solid #ddd;
+    padding: 1.25rem; 
+    margin-bottom: 1.5rem; 
+    border-radius: 0.375rem;
+    background-color: #f8f9fa; 
+}
+
+.record-form-section legend {
+    font-size: 1.1em;
+    font-weight: 600; 
+    padding-bottom: 0.5rem;
+    margin-bottom: 1rem; 
+    border-bottom: 1px solid #eee;
+    width: auto; 
+    float: none; 
+}
+
+.form-check {
+    padding-left: 1.5em;
+}
+.form-check .form-check-input {
+    margin-left: -1.5em;
+}
+
+.align-items-end {
+    align-items: flex-end; 
+}
+.align-items-center {
+    align-items: center;
+}
+
+.invalid-feedback.d-block {
+    display: block !important;
+}
