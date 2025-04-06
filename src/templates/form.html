@@ -93,6 +93,7 @@
               {{ subfield.label(class="form-check-label") }}
             </div>
             {% endfor %}
+            {{ render_errors(form.ventilation) }}
           </div>
           <div class="col-sm-4">
             {{ form.peep.label(class="form-label") }}
