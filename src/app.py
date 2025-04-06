@@ -1,19 +1,9 @@
 import os
 import io
+
 from datetime import datetime, date, time
-from flask import (
-    Flask,
-    render_template,
-    request,
-    redirect,
-    url_for,
-    flash,
-    send_file,
-    abort,
-)
+from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import desc
-import pandas as pd
 
 def create_instance_folder():
     try:
@@ -22,7 +12,7 @@ def create_instance_folder():
         pass
 
 
-def create_database_tables(flask_app, database):
+def create_database_tables(flask_app: Flask, database: SQLAlchemy):
     with flask_app.app_context():
         try:
             database.create_all()
@@ -75,7 +65,5 @@ def _jinja2_filter_fmt(value):
 
 
 
-
-
-if __name__ == "__main__":
-    app.run()  # development only
+# if __name__ == "__main__":
+#     app.run()  # development only
