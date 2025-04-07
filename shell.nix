@@ -11,6 +11,7 @@ in
 pkgs.mkShell {
   packages = with pythonPackages; [
     pygobject3 
+    gst-python                # Saw error: "GStreamer element appsink not found. Please install it."
     numpy
   ];
 
