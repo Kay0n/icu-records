@@ -13,12 +13,16 @@
 
 
 {% block content %}
+<script src="{{ url_for('static', filename='js/bsa.js') }}" defer></script>
+<script src="{{ url_for('static', filename='js/time.js') }}"></script>
+
+
 <h1>{{ form_title }}</h1>
 <hr>
 
 <form method="POST" action="{{ form_action }}" novalidate>
   {{ form.csrf_token }}
-
+  
   <!-- Section 1: Patient Information & Setup -->
   <fieldset class="record-form-section">
     <legend class="mb-3">Patient Information & Setup</legend>
@@ -44,29 +48,28 @@
     <div class="row mb-3 align-items-end">
       <div class="col-md-4">
         {{ form.observer.label(class="form-label") }}
-        {{ form.observer(class="form-select form-select-sm" + (' is-invalid' if form.observer.errors else '')) }} 
+        {{ form.observer(class="form-select form-select-sm" + (' is-invalid' if form.observer.errors else '')) }}
         {{ render_errors(form.observer) }}
       </div>
       <div class="col-md-2">
         {{ form.height_cm.label(class="form-label") }}
-        {{ form.height_cm(class="form-control form-control-sm" + (' is-invalid' if form.height_cm.errors else ''),
-        placeholder='cm') }}
+        {{ form.height_cm(id="height_cm", class="form-control form-control-sm" + (' is-invalid' if form.height_cm.errors else ''),
+        placeholder='cm', type="number", step="any", min="0") }}
         {{ render_errors(form.height_cm) }}
       </div>
       <div class="col-md-2">
         {{ form.weight_kg.label(class="form-label") }}
-        {{ form.weight_kg(class="form-control form-control-sm" + (' is-invalid' if form.weight_kg.errors else ''),
-        placeholder='kg') }}
+        {{ form.weight_kg(id="weight_kg", class="form-control form-control-sm" + (' is-invalid' if form.weight_kg.errors else ''),
+        placeholder='kg', type="number", step="any", min="0") }}
         {{ render_errors(form.weight_kg) }}
       </div>
       <div class="col-md-2">
         {{ form.bsa.label(class="form-label") }}
-        {{ form.bsa(class="form-control form-control-sm" + (' is-invalid' if form.bsa.errors else ''), placeholder='m²')
-        }}
-        {{ render_errors(form.bsa) }}
+        {{ form.bsa(id="bsa", class="form-control form-control-sm" + (' is-invalid' if form.bsa.errors else ''), placeholder='m²', readonly=True) }}
+        <!-- {{ render_errors(form.bsa) }} -->
       </div>
       <div class="col-md-2">
-        <label class="form-label d-block">Checks</label> 
+        <label class="form-label d-block">Checks</label>
         <div class="form-check form-check-inline">
           {{ form.check_head_of_bed(class="form-check-input") }}
           {{ form.check_head_of_bed.label(class="form-check-label small") }}
@@ -183,21 +186,18 @@
     <div class="row mb-3 align-items-center">
       <div class="col-md-3 align-items-center">
         {{ form.echo_start_time.label(class="form-label") }}
-        {{ form.echo_start_time(class="form-control form-control-sm" + (' is-invalid' if form.echo_start_time.errors
-        else ''), type="text", placeholder='HH:MM') }}
+        {{ form.echo_start_time(id="echo_start_time", class="form-control form-control-sm" + (' is-invalid' if form.echo_start_time.errors else ''), type="text", placeholder='HH:MM', maxlength='5') }}
         {{ render_errors(form.echo_start_time) }}
       </div>
       <div class="col-md-3">
         {{ form.echo_completion_time.label(class="form-label") }}
-        {{ form.echo_completion_time(class="form-control form-control-sm" + (' is-invalid' if
-        form.echo_completion_time.errors else ''), placeholder='HH:MM') }}
+        {{ form.echo_completion_time(id="echo_completion_time", class="form-control form-control-sm" + (' is-invalid' if form.echo_completion_time.errors else ''), type="text", placeholder='HH:MM', maxlength='5') }}
         {{ render_errors(form.echo_completion_time) }}
       </div>
       <div class="col-md-3">
         {{ form.echo_total_time_min.label(class="form-label") }}
-        {{ form.echo_total_time_min(class="form-control form-control-sm" + (' is-invalid' if
-        form.echo_total_time_min.errors else ''), placeholder='min') }}
-        {{ render_errors(form.echo_total_time_min) }}
+        {{ form.echo_total_time_min(id="echo_total_time_min", class="form-control form-control-sm" + (' is-invalid' if form.echo_total_time_min.errors else ''), placeholder='min', readonly=True) }}
+        <!-- {{ render_errors(form.echo_total_time_min) }} -->
       </div>
     </div>
     <br>
