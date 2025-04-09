@@ -1,5 +1,5 @@
 from datetime import datetime
-from app import db
+from app import database as db
 
 
 class PatientRecord(db.Model):
