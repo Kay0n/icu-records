@@ -27,6 +27,7 @@ def setup_instance_lock(flask_app):
 
 def run_desktop_app(flask_app) -> webview.Window:
     try:
+        webview.settings["ALLOW_DOWNLOADS"] = True
         window = webview.create_window(
             'Your App Title',
             flask_app,
