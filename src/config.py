@@ -33,6 +33,40 @@ class Config:
     APP_DATA_DIR = DATA_DIR
     APP_LOCK_FILE = LOCK_FILE_PATH
 
+
+def _read_secret_key(config, parser) -> str|None:
+    if os.path.exists(CONFIG_FILE_PATH):
+        try:
+            parser.read(CONFIG_FILE_PATH)
+            if 'Flask' in parser and 'SECRET_KEY' in parser['Flask']:
+                key = parser['Flask']['SECRET_KEY']
+                return key
+
+        except configparser.Error as e:
+            logging.error(f"Error reading config file {CONFIG_FILE_PATH}: {e}")
+        return None
+    
+
+def _generate_secret_key(parser):
+        logging.info(f"Secret key not found in {CONFIG_FILE_PATH}. Generating a new one.")
+        key = secrets.token_hex(16)
+
+        if 'Flask' not in parser:
+            parser['Flask'] = {}
+        parser['Flask']['SECRET_KEY'] = key
+        return key
+
+
+def _write_config(parser):
+    try:
+        with open(CONFIG_FILE_PATH, 'w') as configfile:
+            parser.write(configfile)
+        logging.info(f"Configuration saved to {CONFIG_FILE_PATH}")
+    except IOError as e:
+        logging.error(f"Error writing config file {CONFIG_FILE_PATH}: {e}")
+        logging.warning(f"Key will be used for this session only")
+
+
 def load_or_create_config():
     """
     Loads configuration from the user data directory.
@@ -41,37 +75,15 @@ def load_or_create_config():
     """
     config = Config()
     parser = configparser.ConfigParser()
-    secret_key_generated = False
 
-    if os.path.exists(CONFIG_FILE_PATH):
-        try:
-            parser.read(CONFIG_FILE_PATH)
-            if 'Flask' in parser and 'SECRET_KEY' in parser['Flask']:
-                config.SECRET_KEY = parser['Flask']['SECRET_KEY']
-
-
-        except configparser.Error as e:
-            logging.error(f"Error reading config file {CONFIG_FILE_PATH}: {e}")
-            pass
+    config.SECRET_KEY = _read_secret_key(config, parser)
 
     if not config.SECRET_KEY:
-        logging.info(f"Secret key not found in {CONFIG_FILE_PATH}. Generating a new one.")
-        config.SECRET_KEY = secrets.token_hex(16)
-        secret_key_generated = True
+        config.SECRET_KEY = _generate_secret_key(parser)
+        _write_config(parser)
 
-        if 'Flask' not in parser:
-            parser['Flask'] = {}
-        parser['Flask']['SECRET_KEY'] = config.SECRET_KEY
-
-    if secret_key_generated or not os.path.exists(CONFIG_FILE_PATH):
-        try:
-            with open(CONFIG_FILE_PATH, 'w') as configfile:
-                parser.write(configfile)
-            logging.info(f"Configuration saved to {CONFIG_FILE_PATH}")
-        except IOError as e:
-            logging.error(f"Error writing config file {CONFIG_FILE_PATH}: {e}")
-            logging.warning(f"Key will be used for this session only")
-
+    elif not os.path.exists(CONFIG_FILE_PATH):
+        _write_config(parser)
 
     return config
 
