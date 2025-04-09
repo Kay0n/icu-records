@@ -3,15 +3,14 @@ from sqlalchemy import desc
 import io
 from datetime import datetime, date, time
 import pandas as pd
-from app import app, db
+from app import flask_app, database as db
 from models import PatientRecord
 from forms import RecordForm
 
 
-@app.route("/")
-@app.route("/dashboard")
+@flask_app.route("/")
+@flask_app.route("/dashboard")
 def dashboard():
-    app.logger.info(f"Dashboard using DB: {app.config['SQLALCHEMY_DATABASE_URI']}")
     try:
         records = PatientRecord.query.order_by(desc(PatientRecord.created_at)).all()
     except Exception as e:
@@ -20,7 +19,7 @@ def dashboard():
     return render_template("dashboard.html", records=records)
 
 
-@app.route("/add", methods=["GET", "POST"])
+@flask_app.route("/add", methods=["GET", "POST"])
 def add_record():
     form = RecordForm()
     if form.validate_on_submit():
@@ -40,10 +39,10 @@ def add_record():
         except Exception as e:
             db.session.rollback()
             flash(f"Error adding record: {e}", "danger")
-            app.logger.error(f"Error adding record: {e}")
+            flask_app.logger.error(f"Error adding record: {e}")
     else:
         if request.method == "POST":
-            app.logger.warning(f"Form validation failed: {form.errors}")
+            flask_app.logger.warning(f"Form validation failed: {form.errors}")
 
     return render_template(
         "form.html",
@@ -53,7 +52,7 @@ def add_record():
     )
 
 
-@app.route("/edit/<int:record_id>", methods=["GET", "POST"])
+@flask_app.route("/edit/<int:record_id>", methods=["GET", "POST"])
 def edit_record(record_id):
     record = PatientRecord.query.get_or_404(record_id)
     form = RecordForm(obj=record)
@@ -72,9 +71,9 @@ def edit_record(record_id):
         except Exception as e:
             db.session.rollback()
             flash(f"Error updating record: {e}", "danger")
-            app.logger.error(f"Error updating record {record_id}: {e}")
+            flask_app.logger.error(f"Error updating record {record_id}: {e}")
     elif request.method == "POST":
-        app.logger.warning(
+        flask_app.logger.warning(
             f"Form validation failed for edit {record_id}: {form.errors}"
         )
 
@@ -86,7 +85,7 @@ def edit_record(record_id):
     )
 
 
-@app.route("/delete/<int:record_id>", methods=["POST"])
+@flask_app.route("/delete/<int:record_id>", methods=["POST"])
 def delete_record(record_id):
     record = PatientRecord.query.get_or_404(record_id)
     try:
@@ -96,18 +95,18 @@ def delete_record(record_id):
     except Exception as e:
         db.session.rollback()
         flash(f"Error deleting record: {e}", "danger")
-        app.logger.error(f"Error deleting record {record_id}: {e}")
+        flask_app.logger.error(f"Error deleting record {record_id}: {e}")
     return redirect(url_for("dashboard"))
 
 
-@app.route("/print/<int:record_id>")
+@flask_app.route("/print/<int:record_id>")
 def print_record(record_id):
     record = PatientRecord.query.get_or_404(record_id)
     return render_template("print.html", record=record)
     # , format_value=app.jinja_env.filters['fmt']
 
 
-@app.route("/download")
+@flask_app.route("/download")
 def download_records():
     try:
         records = PatientRecord.query.order_by(desc(PatientRecord.created_at)).all()
@@ -145,5 +144,5 @@ def download_records():
         )
     except Exception as e:
         flash(f"Error generating Excel file: {e}", "danger")
-        app.logger.error(f"Error generating Excel file: {e}")
+        flask_app.logger.error(f"Error generating Excel file: {e}")
         return redirect(url_for("dashboard"))
