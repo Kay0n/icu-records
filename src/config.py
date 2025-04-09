@@ -7,12 +7,12 @@ from appdirs import user_data_dir
 logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
 
 
-APP_NAME = "EchoDB"
+APP_NAME = "echo-records"
 APP_AUTHOR = "Kayon" 
 DATA_DIR = user_data_dir(APP_NAME, APP_AUTHOR)
 
 CONFIG_FILE_PATH = os.path.join(DATA_DIR, 'config.ini')
-DATABASE_FILE_PATH = os.path.join(DATA_DIR, 'echo_database.db')
+DATABASE_FILE_PATH = os.path.join(DATA_DIR, 'database.sqlite')
 LOCK_FILE_PATH = os.path.join(DATA_DIR, 'instance.lock') 
 
 
