@@ -3,7 +3,7 @@ import logging
 from datetime import datetime, date, time
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-from config import Config, load_or_create_config
+from config import Config
 
 
 
@@ -22,7 +22,7 @@ def format_value(value):
 
 flask_app = Flask(__name__)
 
-config: Config = load_or_create_config()
+config: Config = Config()
 flask_app.config.from_object(config)
 
 database = SQLAlchemy(flask_app)
