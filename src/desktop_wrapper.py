@@ -29,14 +29,20 @@ def run_desktop_app(flask_app) -> webview.Window:
     try:
         webview.settings["ALLOW_DOWNLOADS"] = True
         window = webview.create_window(
-            'Your App Title',
+            'ECHO Records',
             flask_app,
-            width=1400,
-            height=850
+            width=1200,
+            height=800,
+            resizable=True
         )
         
         logging.info("Application starting")
-        webview.start(debug=False, http_server=True) # TODO: debug on dev only
+        webview.start(
+            lambda w: w.maximize(),
+            window, 
+            debug=False, 
+            http_server=True
+        )
 
         return window
 
