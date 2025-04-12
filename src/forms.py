@@ -43,24 +43,30 @@ CVC_LOCATION_CHOICES = [
 
 
 class RecordForm(FlaskForm):
+
+
+    # Patient Info
     patient_ur = StringField(
         "Patient UR No", validators=[InputRequired(), Length(max=80)]
     )
     patient_serial = StringField(
-        "Patient's Serial Number", validators=[Optional(), Length(max=80)]
+        "Patient's Serial Number", validators=[InputRequired(), Length(max=80)]
     )
     collection_date = DateField(
         "Date of Data Collection", validators=[InputRequired()], format="%Y-%m-%d"
     )
     observer = SelectField(
-        "Observer", choices=OBSERVER_CHOICES, validators=[Optional()]
-    )  # Changed to optional
-    check_head_of_bed = BooleanField("Head of Bed 30 degrees")
-    check_transducer_level = BooleanField("Transducer leveled and zeroed")
-    height_cm = FloatField("Height (cm)", validators=[Optional(), NumberRange(min=0)])
-    weight_kg = FloatField("Weight (kg)", validators=[Optional(), NumberRange(min=0)])
+        "Observer", choices=OBSERVER_CHOICES, validators=[InputRequired()]
+    )  
+    check_head_of_bed = BooleanField("Head of Bed 30 degrees", validators=[InputRequired()])
+    check_transducer_level = BooleanField("Transducer leveled and zeroed", validators=[InputRequired()])
+    height_cm = FloatField("Height (cm)", validators=[InputRequired(), NumberRange(min=0)])
+    weight_kg = FloatField("Weight (kg)", validators=[InputRequired(), NumberRange(min=0)])
     bsa = FloatField("BSA (m²)", validators=[Optional(), NumberRange(min=0)])
 
+
+
+    # Current Patient Treatment
     ventilation = RadioField(
         "Ventilation",
         choices=[
@@ -68,9 +74,13 @@ class RecordForm(FlaskForm):
             ("invasive", "Invasive Ventilation"),
             ("noninvasive", "Non-Invasive Ventilation"),
         ],
+        validators=[InputRequired()]
     )
-    peep = FloatField("PEEP", validators=[Optional(), NumberRange(min=0)])
+    peep = FloatField("PEEP", validators=[InputRequired(), NumberRange(min=0)])
 
+
+
+    # Medicaitons
     medication_aramine = BooleanField("Aramine")
     medication_noradrenaline = BooleanField("Noradrenaline")
     medication_adrenaline = BooleanField("Adrenaline")
@@ -79,42 +89,31 @@ class RecordForm(FlaskForm):
     medication_isoprenaline = BooleanField("Isoprenaline")
     medication_dobutamine = BooleanField("Dobutamine")
 
+
+
+    # Observations
     cardiac_rhythm = SelectField(
-        "Cardiac Rhythm", choices=CARDIAC_RHYTHM_CHOICES, validators=[Optional()]
+        "Cardiac Rhythm", choices=CARDIAC_RHYTHM_CHOICES, validators=[InputRequired()]
     )
-
+    cvc_location = SelectField(
+        "CVC Location", choices=CVC_LOCATION_CHOICES, validators=[InputRequired()]
+    )
     jvp_height_cm = FloatField(
-        "JVP height (cm)", validators=[Optional(), NumberRange(min=0)]
+        "JVP height (cm)", validators=[InputRequired(), NumberRange(min=0)]
     )
-    photograph_taken = BooleanField("Photograph with ruler and patient SN, taken")
+    photograph_taken = BooleanField("Photograph with ruler and patient SN, taken", validators=[InputRequired()])
 
+
+
+    # Echo Measurements
     echo_start_time = TimeField(
-        "ECHO START TIME", validators=[Optional()], format="%H:%M"
+        "ECHO START TIME", validators=[InputRequired()], format="%H:%M"
     )
     echo_completion_time = TimeField(
-        "ECHO COMPLETION TIME", validators=[Optional()], format="%H:%M"
+        "ECHO COMPLETION TIME", validators=[InputRequired()], format="%H:%M"
     )
     echo_total_time_min = IntegerField(
         "Total Time (min)", validators=[Optional(), NumberRange(min=0)]
-    )
-
-    hr = IntegerField("HR", validators=[Optional(), NumberRange(min=0)])
-    sys_bp_mmhg = IntegerField(
-        "Sys BP (mmHg)", validators=[Optional(), NumberRange(min=0)]
-    )
-    dia_bp_mmhg = IntegerField(
-        "Dia BP (mmHg)", validators=[Optional(), NumberRange(min=0)]
-    )
-    map_bp_mmhg = IntegerField(
-        "Map BP (mmHg)", validators=[Optional(), NumberRange(min=0)]
-    )
-    cvp_mmhg = IntegerField("CVP (mmHg)", validators=[Optional(), NumberRange(min=0)])
-    pulse_pressure_variation_mmhg = FloatField(
-        "Pulse Pressure Variation (mmHg)", validators=[Optional(), NumberRange(min=0)]
-    )
-
-    cvc_location = SelectField(
-        "CVC Location", choices=CVC_LOCATION_CHOICES, validators=[Optional()]
     )
 
     ivc_diameter_cm = FloatField(
@@ -163,5 +162,25 @@ class RecordForm(FlaskForm):
     tev_prime = FloatField(
         "TEV'", validators=[Optional(), NumberRange(min=0)]
     )  # Assuming numeric, unit unclear
+
+
+
+    # Heamodynamics
+    hr = IntegerField("HR", validators=[Optional(), NumberRange(min=0)])
+    sys_bp_mmhg = IntegerField(
+        "Sys BP (mmHg)", validators=[Optional(), NumberRange(min=0)]
+    )
+    dia_bp_mmhg = IntegerField(
+        "Dia BP (mmHg)", validators=[Optional(), NumberRange(min=0)]
+    )
+    map_bp_mmhg = IntegerField(
+        "Map BP (mmHg)", validators=[Optional(), NumberRange(min=0)]
+    )
+    cvp_mmhg = IntegerField("CVP (mmHg)", validators=[Optional(), NumberRange(min=0)])
+    pulse_pressure_variation_mmhg = FloatField(
+        "Pulse Pressure Variation (mmHg)", validators=[Optional(), NumberRange(min=0)]
+    )
+
+
 
     submit = SubmitField("Save Record")
