@@ -2,6 +2,7 @@
 echo Pulling from repo
 git pull
 echo Activating venv
+python -m venv .venv
 call .venv\Scripts\activate.bat
 echo Installing modules
 pip install -r requirements.txt
