@@ -2,6 +2,7 @@ import webview
 import fasteners
 import logging
 import sys
+import os
 import atexit
 
 from app import flask_app 
@@ -51,6 +52,8 @@ def run_desktop_app(flask_app) -> webview.Window:
         sys.exit(1)
 
 
+# prevent startup hang caused by windows proxy setting "Automatically detect settings"
+os.environ["WEBVIEW2_ADDITIONAL_BROWSER ARGUMENTS"] = "--no-proxy-server"
 
 
 setup_instance_lock(flask_app)
