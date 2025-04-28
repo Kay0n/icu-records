@@ -5,7 +5,7 @@
 {# helper macro for rendering errors inline - useful inside tables #}
 {% macro render_errors(field) %}
 {% if field.errors %}
-<div class="invalid-feedback d-block"> 
+<div class="invalid-feedback d-block">
   {{ field.errors|join(' ') }}
 </div>
 {% endif %}
@@ -29,7 +29,7 @@
     </div>
   </div>
   <hr>
-  
+
   <!-- Section 1: Patient Information & Setup -->
   <fieldset class="record-form-section">
     <legend class="mb-3">Patient Information & Setup</legend>
@@ -60,19 +60,22 @@
       </div>
       <div class="col-md-2">
         {{ form.height_cm.label(class="form-label") }}
-        {{ form.height_cm(id="height_cm", class="form-control form-control-sm" + (' is-invalid' if form.height_cm.errors else ''),
+        {{ form.height_cm(id="height_cm", class="form-control form-control-sm" + (' is-invalid' if form.height_cm.errors
+        else ''),
         placeholder='cm', type="number", step="any", min="0") }}
         {{ render_errors(form.height_cm) }}
       </div>
       <div class="col-md-2">
         {{ form.weight_kg.label(class="form-label") }}
-        {{ form.weight_kg(id="weight_kg", class="form-control form-control-sm" + (' is-invalid' if form.weight_kg.errors else ''),
+        {{ form.weight_kg(id="weight_kg", class="form-control form-control-sm" + (' is-invalid' if form.weight_kg.errors
+        else ''),
         placeholder='kg', type="number", step="any", min="0") }}
         {{ render_errors(form.weight_kg) }}
       </div>
       <div class="col-md-2">
         {{ form.bsa.label(class="form-label") }}
-        {{ form.bsa(id="bsa", class="form-control form-control-sm" + (' is-invalid' if form.bsa.errors else ''), placeholder='m²', readonly=True) }}
+        {{ form.bsa(id="bsa", class="form-control form-control-sm" + (' is-invalid' if form.bsa.errors else ''),
+        placeholder='m²', readonly=True) }}
         <!-- {{ render_errors(form.bsa) }} -->
       </div>
       <div class="col-md-2">
@@ -80,10 +83,12 @@
         <div class="form-check form-check-inline">
           {{ form.check_head_of_bed(class="form-check-input") }}
           {{ form.check_head_of_bed.label(class="form-check-label small") }}
+          {{ render_errors(form.check_head_of_bed) }}
         </div>
         <div class="form-check form-check-inline">
           {{ form.check_transducer_level(class="form-check-input") }}
           {{ form.check_transducer_level.label(class="form-check-label small") }}
+          {{ render_errors(form.check_transducer_level) }}
         </div>
       </div>
     </div>
@@ -92,7 +97,7 @@
   <!-- Section 2 & 3: Treatment & Inotropes -->
   <div class="row">
     <div class="col-md-6">
-      <fieldset class="record-form-section h-100"> 
+      <fieldset class="record-form-section h-100">
         <legend class="mb-3">Current Patient Treatment</legend>
         <div class="row">
           <div class="col-sm-8">
@@ -174,10 +179,11 @@
         {{ render_errors(form.jvp_height_cm) }}
       </div>
 
-      <div class="col-md-3 d-flex align-items-center pt-4"> 
+      <div class="col-md-3 d-flex align-items-center pt-4">
         <div class="form-check">
           {{ form.photograph_taken(class="form-check-input") }}
           {{ form.photograph_taken.label(class="form-check-label") }}
+          {{ render_errors(form.photograph_taken) }}
         </div>
       </div>
     </div>
@@ -193,41 +199,44 @@
     <div class="row mb-3 align-items-center">
       <div class="col-md-3 align-items-center">
         {{ form.echo_start_time.label(class="form-label") }}
-        {{ form.echo_start_time(id="echo_start_time", class="form-control form-control-sm" + (' is-invalid' if form.echo_start_time.errors else ''), type="text", placeholder='HH:MM', maxlength='5') }}
+        {{ form.echo_start_time(id="echo_start_time", class="form-control form-control-sm" + (' is-invalid' if
+        form.echo_start_time.errors else ''), type="text", placeholder='HH:MM', maxlength='5') }}
         {{ render_errors(form.echo_start_time) }}
       </div>
       <div class="col-md-3">
         {{ form.echo_completion_time.label(class="form-label") }}
-        {{ form.echo_completion_time(id="echo_completion_time", class="form-control form-control-sm" + (' is-invalid' if form.echo_completion_time.errors else ''), type="text", placeholder='HH:MM', maxlength='5') }}
+        {{ form.echo_completion_time(id="echo_completion_time", class="form-control form-control-sm" + (' is-invalid' if
+        form.echo_completion_time.errors else ''), type="text", placeholder='HH:MM', maxlength='5') }}
         {{ render_errors(form.echo_completion_time) }}
       </div>
       <div class="col-md-3">
         {{ form.echo_total_time_min.label(class="form-label") }}
-        {{ form.echo_total_time_min(id="echo_total_time_min", class="form-control form-control-sm" + (' is-invalid' if form.echo_total_time_min.errors else ''), placeholder='min', readonly=True) }}
+        {{ form.echo_total_time_min(id="echo_total_time_min", class="form-control form-control-sm" + (' is-invalid' if
+        form.echo_total_time_min.errors else ''), placeholder='min', readonly=True) }}
         <!-- {{ render_errors(form.echo_total_time_min) }} -->
       </div>
     </div>
     <br>
     <div class="table-responsive">
-      <table class="table table-bordered table-sm" style="font-size: 0.9em;"> 
+      <table class="table table-bordered table-sm" style="font-size: 0.9em;">
         <tbody>
           <tr>
             <td style="width: 20%;">{{ form.ivc_diameter_cm.label(class="form-label mb-0") }}</td>
             <td style="width: 20%;">
               <div class="input-group input-group-sm">
                 {{ form.ivc_diameter_cm(class="form-control form-control-sm" + (' is-invalid' if
-                form.ivc_diameter_cm.errors else ''), tabindex="1") }} 
-                <span class="input-group-text">cm</span>
+                form.ivc_diameter_cm.errors else ''), tabindex="1") }}
+                <span class="input-group-text">{{ form.ivc_diameter_cm.unit }}</span>
               </div>
               {{ render_errors(form.ivc_diameter_cm) }}
             </td>
-            <td style="width: 10%;"></td> 
+            <td style="width: 10%;"></td>
             <td style="width: 20%;">{{ form.e_velocity_mps.label(class="form-label mb-0") }}</td>
             <td style="width: 20%;">
               <div class="input-group input-group-sm">
                 {{ form.e_velocity_mps(class="form-control form-control-sm" + (' is-invalid' if
                 form.e_velocity_mps.errors else ''), tabindex="9") }}
-                <span class="input-group-text">M/sec</span>
+                <span class="input-group-text">{{ form.e_velocity_mps.unit }}</span>
               </div>
               {{ render_errors(form.e_velocity_mps) }}
             </td>
@@ -237,8 +246,8 @@
             <td>
               <div class="input-group input-group-sm">
                 {{ form.systemic_venous_flow_velocity_mps(class="form-control form-control-sm" + (' is-invalid' if
-                form.systemic_venous_flow_velocity_mps.errors else ''), tabindex="2") }} 
-                <span class="input-group-text">m/sec</span>
+                form.systemic_venous_flow_velocity_mps.errors else ''), tabindex="2") }}
+                <span class="input-group-text">{{ form.systemic_venous_flow_velocity_mps.unit }}</span>
               </div>
               {{ render_errors(form.systemic_venous_flow_velocity_mps) }}
             </td>
@@ -249,7 +258,7 @@
               <div class="input-group input-group-sm">
                 {{ form.a_velocity_mps(class="form-control form-control-sm" + (' is-invalid' if
                 form.a_velocity_mps.errors else ''), tabindex="10") }}
-                <span class="input-group-text">M/sec</span>
+                <span class="input-group-text">{{ form.a_velocity_mps.unit }}</span>
               </div>
               {{ render_errors(form.a_velocity_mps) }}
             </td>
@@ -260,8 +269,8 @@
             <td>
               <div class="input-group input-group-sm">
                 {{ form.tricuspid_valve_doppler_inflow_mps(class="form-control form-control-sm" + (' is-invalid' if
-                form.tricuspid_valve_doppler_inflow_mps.errors else ''), tabindex="3") }} 
-                <span class="input-group-text">m/sec</span>
+                form.tricuspid_valve_doppler_inflow_mps.errors else ''), tabindex="3") }}
+                <span class="input-group-text">{{ form.tricuspid_valve_doppler_inflow_mps.unit }}</span>
               </div>
               {{ render_errors(form.tricuspid_valve_doppler_inflow_mps) }}
             </td>
@@ -271,8 +280,8 @@
             <td>
               <div class="input-group input-group-sm">
                 {{ form.mean_gradient_mmhg(class="form-control form-control-sm" + (' is-invalid' if
-                form.mean_gradient_mmhg.errors else ''), tabindex="11") }} 
-                <span class="input-group-text">mmHg</span>
+                form.mean_gradient_mmhg.errors else ''), tabindex="11") }}
+                <span class="input-group-text">{{ form.mean_gradient_mmhg.unit }}</span>
               </div>
               {{ render_errors(form.mean_gradient_mmhg) }}
             </td>
@@ -283,8 +292,8 @@
             <td>
               <div class="input-group input-group-sm">
                 {{ form.tr_max_mps(class="form-control form-control-sm" + (' is-invalid' if form.tr_max_mps.errors else
-                ''), tabindex="4") }} 
-                <span class="input-group-text">M/sec</span>
+                ''), tabindex="4") }}
+                <span class="input-group-text">{{ form.tr_max_mps.unit }}</span>
               </div>
               {{ render_errors(form.tr_max_mps) }}
             </td>
@@ -294,8 +303,8 @@
             <td>
               <div class="input-group input-group-sm">
                 {{ form.dt_mps(class="form-control form-control-sm" + (' is-invalid' if form.dt_mps.errors else ''),
-                tabindex="12") }} 
-                <span class="input-group-text">M/sec</span>
+                tabindex="12") }}
+                <span class="input-group-text">{{ form.dt_mps.unit }}</span>
               </div>
               {{ render_errors(form.dt_mps) }}
             </td>
@@ -306,8 +315,8 @@
             <td>
               <div class="input-group input-group-sm">
                 {{ form.tr_peak_gradient_mmhg(class="form-control form-control-sm" + (' is-invalid' if
-                form.tr_peak_gradient_mmhg.errors else ''), tabindex="5") }} 
-                <span class="input-group-text">mm Hg</span>
+                form.tr_peak_gradient_mmhg.errors else ''), tabindex="5") }}
+                <span class="input-group-text">{{ form.tr_peak_gradient_mmhg.unit }}</span>
               </div>
               {{ render_errors(form.tr_peak_gradient_mmhg) }}
             </td>
@@ -317,8 +326,8 @@
             <td>
               <div class="input-group input-group-sm">
                 {{ form.pht_mps(class="form-control form-control-sm" + (' is-invalid' if form.pht_mps.errors else ''),
-                tabindex="13") }} 
-                <span class="input-group-text">M/sec</span>
+                tabindex="13") }}
+                <span class="input-group-text">{{ form.pht_mps.unit }}</span>
               </div>
               {{ render_errors(form.pht_mps) }}
             </td>
@@ -330,7 +339,7 @@
               <div class="input-group input-group-sm">
                 {{ form.rap_mmhg(class="form-control form-control-sm" + (' is-invalid' if form.rap_mmhg.errors else ''),
                 tabindex="6") }}
-                <span class="input-group-text">mm Hg</span>
+                <span class="input-group-text">{{ form.rap_mmhg.unit }}</span>
               </div>
               {{ render_errors(form.rap_mmhg) }}
             </td>
@@ -340,8 +349,8 @@
             <td>
               <div class="input-group input-group-sm">
                 {{ form.tva_cont_cm2(class="form-control form-control-sm" + (' is-invalid' if form.tva_cont_cm2.errors
-                else ''), tabindex="14") }} 
-                <span class="input-group-text">Cm²</span>
+                else ''), tabindex="14") }}
+                <span class="input-group-text">{{ form.tva_cont_cm2.unit }}</span>
               </div>
               {{ render_errors(form.tva_cont_cm2) }}
             </td>
@@ -352,8 +361,8 @@
             <td>
               <div class="input-group input-group-sm">
                 {{ form.rvsp_mmhg(class="form-control form-control-sm" + (' is-invalid' if form.rvsp_mmhg.errors else
-                ''), tabindex="7") }} 
-                <span class="input-group-text">mm Hg</span>
+                ''), tabindex="7") }}
+                <span class="input-group-text">{{ form.rvsp_mmhg.unit }}</span>
               </div>
               {{ render_errors(form.rvsp_mmhg) }}
             </td>
@@ -362,7 +371,7 @@
             <td>{{ form.rsv_prime.label(class="form-label mb-0") }}</td>
             <td>
               {{ form.rsv_prime(class="form-control form-control-sm" + (' is-invalid' if form.rsv_prime.errors else ''),
-              tabindex="15") }} 
+              tabindex="15") }}
               {{ render_errors(form.rsv_prime) }}
             </td>
           </tr>
@@ -372,8 +381,8 @@
             <td>
               <div class="input-group input-group-sm">
                 {{ form.vti_cm(class="form-control form-control-sm" + (' is-invalid' if form.vti_cm.errors else ''),
-                tabindex="8") }} 
-                <span class="input-group-text">cm</span>
+                tabindex="8") }}
+                <span class="input-group-text">{{ form.vti_cm.unit }}</span>
               </div>
               {{ render_errors(form.vti_cm) }}
             </td>
@@ -389,6 +398,7 @@
         </tbody>
       </table>
     </div>
+
   </fieldset>
 
 
@@ -437,7 +447,7 @@
 
 
   <!-- Submit Button -->
-  <div class="row mt-4 mb-5"> 
+  <div class="row mt-4 mb-5">
     <div class="col-12">
       {{ form.submit(class="btn btn-primary") }}
       <a href="{{ url_for('dashboard') }}" class="btn btn-secondary ms-2">Cancel</a>

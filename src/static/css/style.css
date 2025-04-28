@@ -34,3 +34,7 @@
 .invalid-feedback.d-block {
     display: block !important;
 }
+
+.input-group-text {
+    min-width: 70px;
+}

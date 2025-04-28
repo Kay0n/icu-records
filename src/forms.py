@@ -12,6 +12,11 @@ from wtforms import (
 )
 from wtforms.validators import InputRequired, Optional, Length, NumberRange
 
+class UnitFloatField(FloatField):
+    def __init__(self, label=None, validators=None, unit=None, **kwargs):
+        self.unit = unit
+        super().__init__(label=label, validators=validators, **kwargs)
+
 OBSERVER_CHOICES = [
     ("", "-- Select Observer --"),
     ("Dr Abraham Phillips", "Dr Abraham Phillips"),
@@ -46,11 +51,11 @@ class RecordForm(FlaskForm):
 
 
     # Patient Info
-    patient_ur = StringField(
-        "Patient UR No", validators=[InputRequired(), Length(max=80)]
+    patient_ur = IntegerField(
+        "Patient UR No", validators=[InputRequired()]
     )
-    patient_serial = StringField(
-        "Patient's Serial Number", validators=[InputRequired(), Length(max=80)]
+    patient_serial = IntegerField(
+        "Patient's Serial Number", validators=[InputRequired()]
     )
     collection_date = DateField(
         "Date of Data Collection", validators=[InputRequired()], format="%Y-%m-%d"
@@ -76,7 +81,7 @@ class RecordForm(FlaskForm):
         ],
         validators=[InputRequired()]
     )
-    peep = FloatField("PEEP", validators=[InputRequired(), NumberRange(min=0)])
+    peep = FloatField("PEEP", validators=[Optional(), NumberRange(min=0)])
 
 
 
@@ -116,52 +121,87 @@ class RecordForm(FlaskForm):
         "Total Time (min)", validators=[Optional(), NumberRange(min=0)]
     )
 
-    ivc_diameter_cm = FloatField(
-        "IVC diameter (2cm from IVC-RA junction) (cm)",
-        validators=[Optional(), NumberRange(min=0)],
-    )
-    systemic_venous_flow_velocity_mps = FloatField(
-        "Systemic venous flow velocity (m/sec)",
-        validators=[Optional(), NumberRange(min=0)],
-    )
-    tricuspid_valve_doppler_inflow_mps = FloatField(
-        "Tricuspid valve Doppler inflow (m/sec)",
-        validators=[Optional(), NumberRange(min=0)],
-    )
-    tr_max_mps = FloatField(
-        "TR Max (M/sec)", validators=[Optional(), NumberRange(min=0)]
-    )
-    tr_peak_gradient_mmhg = FloatField(
-        "TR peak gradient (mm Hg)", validators=[Optional(), NumberRange(min=0)]
-    )
-    rap_mmhg = FloatField("RAP (mm Hg)", validators=[Optional(), NumberRange(min=0)])
-    rvsp_mmhg = FloatField("RVSP (mm Hg)", validators=[Optional(), NumberRange(min=0)])
-    vti_cm = FloatField("VTI (cm)", validators=[Optional(), NumberRange(min=0)])
 
-    e_velocity_mps = FloatField(
-        "E velocity (M/sec)", validators=[Optional(), NumberRange(min=0)]
+    ivc_diameter_cm = UnitFloatField(
+        "IVC diameter (2cm from IVC-RA junction)",
+        unit="cm",
+        validators=[InputRequired(), NumberRange(min=0)],
     )
-    a_velocity_mps = FloatField(
-        "A velocity (M/sec)", validators=[Optional(), NumberRange(min=0)]
+    systemic_venous_flow_velocity_mps = UnitFloatField(
+        "Systemic venous flow velocity",
+        unit="cm/sec",
+        validators=[InputRequired(), NumberRange(min=0)],
     )
-    mean_gradient_mmhg = FloatField(
-        "Mean Gradient (mmHg)", validators=[Optional(), NumberRange(min=0)]
+    tricuspid_valve_doppler_inflow_mps = UnitFloatField(
+        "Tricuspid valve Doppler inflow",
+        unit="cm/sec",
+        validators=[InputRequired(), NumberRange(min=0)],
     )
-    dt_mps = FloatField(
-        "DT (M/sec)", validators=[Optional(), NumberRange(min=0)]
-    )  # Deceleration Time
-    pht_mps = FloatField(
-        "PHT (M/sec)", validators=[Optional(), NumberRange(min=0)]
-    )  # Pressure Half-Time
-    tva_cont_cm2 = FloatField(
-        "TVA (cont) (Cm2)", validators=[Optional(), NumberRange(min=0)]
-    )  # Tricuspid Valve Area
+    tr_max_mps = UnitFloatField(
+        "TR Max",
+        unit="m/sec",
+        validators=[InputRequired(), NumberRange(min=0)]
+    )
+    tr_peak_gradient_mmhg = UnitFloatField(
+        "TR peak gradient",
+        unit="mmHg",
+        validators=[InputRequired(), NumberRange(min=0)]
+    )
+    rap_mmhg = UnitFloatField(
+        "RAP",
+        unit="mmHg",
+        validators=[InputRequired(), NumberRange(min=0)]
+    )
+    rvsp_mmhg = UnitFloatField(
+        "RVSP",
+        unit="mmHg",
+        validators=[InputRequired(), NumberRange(min=0)]
+    )
+    vti_cm = UnitFloatField(
+        "VTI",
+        unit="cm",
+        validators=[InputRequired(), NumberRange(min=0)]
+    )
+
+    e_velocity_mps = UnitFloatField(
+        "E velocity",
+        unit="m/sec",
+        validators=[InputRequired(), NumberRange(min=0)]
+    )
+    a_velocity_mps = UnitFloatField(
+        "A velocity",
+        unit="m/sec",
+        validators=[InputRequired(), NumberRange(min=0)]
+    )
+    mean_gradient_mmhg = UnitFloatField(
+        "Mean Gradient",
+        unit="mmHg",
+        validators=[InputRequired(), NumberRange(min=0)]
+    )
+    dt_mps = UnitFloatField(
+        "DT",
+        unit="m/sec",
+        validators=[InputRequired(), NumberRange(min=0)]
+    )
+    pht_mps = UnitFloatField(
+        "PHT",
+        unit="m/sec",
+        validators=[InputRequired(), NumberRange(min=0)]
+    )
+    tva_cont_cm2 = UnitFloatField(
+        "TVA (cont)",
+        unit="cm²",
+        validators=[InputRequired(), NumberRange(min=0)]
+    )
+
     rsv_prime = FloatField(
-        "RSV'", validators=[Optional(), NumberRange(min=0)]
-    )  # Assuming numeric, unit unclear
+        "RSV'",
+        validators=[InputRequired(), NumberRange(min=0)]
+    )
     tev_prime = FloatField(
-        "TEV'", validators=[Optional(), NumberRange(min=0)]
-    )  # Assuming numeric, unit unclear
+        "TEV'",
+        validators=[InputRequired(), NumberRange(min=0)]
+    )
 
 
 
