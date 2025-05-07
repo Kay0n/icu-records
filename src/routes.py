@@ -184,6 +184,6 @@ def format_excel_sheet(writer, dataframe, sheet_name, default_alignment):
         adjusted_width = (max_length + 2)
         worksheet.column_dimensions[column_letter].width = adjusted_width
 
-    for row in worksheet.iter_rows():
+    for row in worksheet.iter_rows(min_row=2):
         for cell in row:
             cell.alignment = alignment_style
