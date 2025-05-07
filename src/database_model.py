@@ -1,10 +1,9 @@
-from datetime import datetime
-from app import database as db
-
+from datetime import datetime, timezone
+from database import database as db
 
 class PatientRecord(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    created_at = db.Column(db.DateTime, default=datetime.now(timezone.utc))
 
     # --- Patient Info & Setup ---
     patient_ur = db.Column(db.String(80), nullable=False)

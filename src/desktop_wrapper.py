@@ -4,8 +4,9 @@ import logging
 import sys
 import os
 import atexit
+from flask import Flask
 
-from app import flask_app 
+from app import create_app 
 
 
 
@@ -26,7 +27,8 @@ def setup_instance_lock(flask_app):
     atexit.register(release_lock) 
 
 
-def run_desktop_app(flask_app) -> webview.Window:
+
+def run_desktop_app(flask_app: Flask) -> webview.Window:
     try:
         webview.settings["ALLOW_DOWNLOADS"] = True
         window = webview.create_window(
@@ -52,13 +54,15 @@ def run_desktop_app(flask_app) -> webview.Window:
         sys.exit(1)
 
 
+
 # prevent startup hang caused by windows proxy setting "Automatically detect settings"
 os.environ["WEBVIEW2_ADDITIONAL_BROWSER ARGUMENTS"] = "--no-proxy-server"
 
+flask_app = create_app()
 
 setup_instance_lock(flask_app)
-run_desktop_app(flask_app)
 
+run_desktop_app(flask_app)
 
 logging.info("Application shutting down")
 logging.shutdown()
