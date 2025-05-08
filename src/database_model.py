@@ -1,9 +1,10 @@
 from datetime import datetime, timezone
+from zoneinfo import ZoneInfo
 from database import database as db
 
 class PatientRecord(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    created_at = db.Column(db.DateTime, default=datetime.now(timezone.utc))
+    created_at = db.Column(db.DateTime, default=datetime.now(ZoneInfo("Australia/Adelaide")))
 
     # --- Patient Info & Setup ---
     patient_ur = db.Column(db.String(80), nullable=False)
@@ -55,9 +56,9 @@ class PatientRecord(db.Model):
     # --- ECHO Measurements ---
     ivc_diameter_cm = db.Column(db.Float, nullable=True)
     e_velocity_mps = db.Column(db.Float, nullable=True)
-    systemic_venous_flow_velocity_mps = db.Column(db.Float, nullable=True)
+    systemic_venous_flow_velocity_cmps = db.Column(db.Float, nullable=True)
     a_velocity_mps = db.Column(db.Float, nullable=True)
-    tricuspid_valve_doppler_inflow_mps = db.Column(db.Float, nullable=True)
+    tricuspid_valve_doppler_inflow_cmps = db.Column(db.Float, nullable=True)
     mean_gradient_mmhg = db.Column(db.Float, nullable=True)
     tr_max_mps = db.Column(db.Float, nullable=True)
     dt_mps = db.Column(db.Float, nullable=True)

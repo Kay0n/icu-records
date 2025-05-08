@@ -242,14 +242,14 @@
             </td>
           </tr>
           <tr>
-            <td>{{ form.systemic_venous_flow_velocity_mps.label(class="form-label mb-0") }}</td>
+            <td>{{ form.systemic_venous_flow_velocity_cmps.label(class="form-label mb-0") }}</td>
             <td>
               <div class="input-group input-group-sm">
-                {{ form.systemic_venous_flow_velocity_mps(class="form-control form-control-sm" + (' is-invalid' if
-                form.systemic_venous_flow_velocity_mps.errors else ''), tabindex="2") }}
-                <span class="input-group-text">{{ form.systemic_venous_flow_velocity_mps.unit }}</span>
+                {{ form.systemic_venous_flow_velocity_cmps(class="form-control form-control-sm" + (' is-invalid' if
+                form.systemic_venous_flow_velocity_cmps.errors else ''), tabindex="2") }}
+                <span class="input-group-text">{{ form.systemic_venous_flow_velocity_cmps.unit }}</span>
               </div>
-              {{ render_errors(form.systemic_venous_flow_velocity_mps) }}
+              {{ render_errors(form.systemic_venous_flow_velocity_cmps) }}
             </td>
             <td></td>
 
@@ -265,14 +265,14 @@
           </tr>
           <tr>
 
-            <td>{{ form.tricuspid_valve_doppler_inflow_mps.label(class="form-label mb-0") }}</td>
+            <td>{{ form.tricuspid_valve_doppler_inflow_cmps.label(class="form-label mb-0") }}</td>
             <td>
               <div class="input-group input-group-sm">
-                {{ form.tricuspid_valve_doppler_inflow_mps(class="form-control form-control-sm" + (' is-invalid' if
-                form.tricuspid_valve_doppler_inflow_mps.errors else ''), tabindex="3") }}
-                <span class="input-group-text">{{ form.tricuspid_valve_doppler_inflow_mps.unit }}</span>
+                {{ form.tricuspid_valve_doppler_inflow_cmps(class="form-control form-control-sm" + (' is-invalid' if
+                form.tricuspid_valve_doppler_inflow_cmps.errors else ''), tabindex="3") }}
+                <span class="input-group-text">{{ form.tricuspid_valve_doppler_inflow_cmps.unit }}</span>
               </div>
-              {{ render_errors(form.tricuspid_valve_doppler_inflow_mps) }}
+              {{ render_errors(form.tricuspid_valve_doppler_inflow_cmps) }}
             </td>
             <td></td>
 

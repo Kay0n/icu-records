@@ -127,12 +127,12 @@ class RecordForm(FlaskForm):
         unit="cm",
         validators=[InputRequired(), NumberRange(min=0)],
     )
-    systemic_venous_flow_velocity_mps = UnitFloatField(
+    systemic_venous_flow_velocity_cmps = UnitFloatField( #aaa
         "Systemic venous flow velocity",
         unit="cm/sec",
         validators=[InputRequired(), NumberRange(min=0)],
     )
-    tricuspid_valve_doppler_inflow_mps = UnitFloatField(
+    tricuspid_valve_doppler_inflow_cmps = UnitFloatField( # aaa
         "Tricuspid valve Doppler inflow",
         unit="cm/sec",
         validators=[InputRequired(), NumberRange(min=0)],
