@@ -52,6 +52,7 @@ def register_routes(app: Flask):
         else:
             if request.method == "POST":
                 app.logger.warning(f"Form validation failed: {form.errors}")
+                flash("One or more fields are invalid", "danger")
 
         return render_template(
             "form.html",
@@ -84,6 +85,7 @@ def register_routes(app: Flask):
                 app.logger.error(f"Error updating record {record_id}: {e}")
         elif request.method == "POST":
             app.logger.warning(f"Form validation failed for edit {record_id}: {form.errors}")
+            flash("One or more fields are invalid", "danger")
 
         return render_template(
             "form.html",
