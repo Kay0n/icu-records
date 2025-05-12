@@ -345,41 +345,41 @@
                     <tr>
                         <td class="field-label" style="width:30%">IVC diameter (cm)</td>
                         <td style="width:20%">{{ record.ivc_diameter_cm | fmt }}</td>
-                        <td class="field-label" style="width:30%">E velocity (M/sec)</td>
+                        <td class="field-label" style="width:30%">E velocity (m/s)</td>
                         <td style="width:20%">{{ record.e_velocity_mps | fmt }}</td>
                     </tr>
                     <tr>
-                        <td class="field-label">Systemic venous flow vel (m/sec)</td>
-                        <td>{{ record.systemic_venous_flow_velocity_mps | fmt }}</td>
-                        <td class="field-label">A velocity (M/sec)</td>
+                        <td class="field-label">Systemic venous flow vel (cm/s)</td>
+                        <td>{{ record.systemic_venous_flow_velocity_cmps | fmt }}</td>
+                        <td class="field-label">A velocity (m/s)</td>
                         <td>{{ record.a_velocity_mps | fmt }}</td>
                     </tr>
                     <tr>
-                        <td class="field-label">Tricuspid valve Doppler inflow (m/sec)</td>
-                        <td>{{ record.tricuspid_valve_doppler_inflow_mps | fmt }}</td>
-                         <td class="field-label">Mean Gradient (mmHg)</td>
+                        <td class="field-label">Tricuspid valve Doppler inflow (cm/s)</td>
+                        <td>{{ record.tricuspid_valve_doppler_inflow_cmps | fmt }}</td>
+                        <td class="field-label">Mean Gradient (mmHg)</td>
                         <td>{{ record.mean_gradient_mmhg | fmt }}</td>
                     </tr>
                     <tr>
-                         <td class="field-label">TR Max (M/sec)</td>
+                         <td class="field-label">TR Max (m/s)</td>
                         <td>{{ record.tr_max_mps | fmt }}</td>
-                        <td class="field-label">DT (M/sec)</td>
+                        <td class="field-label">DT (m/s)</td>
                         <td>{{ record.dt_mps | fmt }}</td>
                     </tr>
                     <tr>
-                         <td class="field-label">TR peak gradient (mm Hg)</td>
+                         <td class="field-label">TR peak gradient (mmHg)</td>
                         <td>{{ record.tr_peak_gradient_mmhg | fmt }}</td>
-                        <td class="field-label">PHT (M/sec)</td>
+                        <td class="field-label">PHT (m/s)</td>
                         <td>{{ record.pht_mps | fmt }}</td>
                     </tr>
                     <tr>
-                         <td class="field-label">RAP (mm Hg)</td>
+                         <td class="field-label">RAP (mmHg)</td>
                         <td>{{ record.rap_mmhg | fmt }}</td>
-                         <td class="field-label">TVA (cont) (Cm²)</td>
+                         <td class="field-label">TVA (cont) (cm²)</td>
                         <td>{{ record.tva_cont_cm2 | fmt }}</td>
                     </tr>
                     <tr>
-                        <td class="field-label">RVSP (mm Hg)</td>
+                        <td class="field-label">RVSP (mmHg)</td>
                         <td>{{ record.rvsp_mmhg | fmt }}</td>
                         <td class="field-label">RSV'</td> 
                         <td>{{ record.rsv_prime | fmt }}</td>
