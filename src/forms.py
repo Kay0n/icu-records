@@ -86,7 +86,7 @@ class RecordForm(FlaskForm):
 
 
     # Medicaitons
-    medication_aramine = BooleanField("Aramine")
+    medication_metaraminol = BooleanField("Metaraminol")
     medication_noradrenaline = BooleanField("Noradrenaline")
     medication_adrenaline = BooleanField("Adrenaline")
     medication_gtn = BooleanField("GTN")

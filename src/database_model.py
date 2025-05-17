@@ -22,7 +22,7 @@ class PatientRecord(db.Model):
     peep = db.Column(db.Float, nullable=True)
 
     # --- Inotropes / Vasopressors / Vasodilators ---
-    medication_aramine = db.Column(db.Boolean, default=False)
+    medication_metaraminol = db.Column(db.Boolean, default=False)
     medication_noradrenaline = db.Column(db.Boolean, default=False)
     medication_adrenaline = db.Column(db.Boolean, default=False)
     medication_gtn = db.Column(db.Boolean, default=False)
